@@ -26,7 +26,7 @@ Route::post('/login', 'App\Http\Controllers\LoginController@autenticar')->name('
 Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('/app')->group(function(){
     Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('app.home');
     Route::get('/sair', 'App\Http\Controllers\LoginController@sair')->name('app.sair');
-    Route::get('/cliente', 'App\Http\Controllers\ClienteController@index')->name('app.cliente');
+    
     Route::get('/fornecedor', 'App\Http\Controllers\FornecedorController@index')->name('app.fornecedor');
     Route::post('/fornecedor/listar', 'App\Http\Controllers\FornecedorController@listar')->name('app.fornecedor.listar');
     Route::get('/fornecedor/listar', 'App\Http\Controllers\FornecedorController@listar')->name('app.fornecedor.listar');
@@ -36,6 +36,16 @@ Route::middleware('autenticacao:padrao,visitante,p3,p4')->prefix('/app')->group(
     Route::get('/fornecedor/excluir/{id}', 'App\Http\Controllers\FornecedorController@excluir')->name('app.fornecedor.excluir');
     
     Route::resource('/produto', 'App\Http\Controllers\ProdutoController');
+
+    Route::resource('/produto-detalhe', 'App\Http\Controllers\ProdutoDetalheController');
+
+    Route::resource('/cliente', 'App\Http\Controllers\ClienteController');
+    Route::resource('/pedido', 'App\Http\Controllers\PedidoController');
+    //Route::resource('/pedido-produto', 'App\Http\Controllers\PedidoProdutoController');
+    Route::get('pedido-produto/create/{pedido}', 'App\Http\Controllers\PedidoProdutoController@create')->name('pedido-produto.create');
+    Route::post('pedido-produto/store/{pedido}', 'App\Http\Controllers\PedidoProdutoController@store')->name('pedido-produto.store');
+    //Route::delete('pedido-produto/destroy/{pedido}/{produto}', 'App\Http\Controllers\PedidoProdutoController@destroy')->name('pedido-produto.destroy');
+    Route::delete('pedido-produto/destroy/{pedidoProduto}/{pedido_id}', 'App\Http\Controllers\PedidoProdutoController@destroy')->name('pedido-produto.destroy');
 });
 
 Route::get('/teste/{p1}/{p2}', 'App\Http\Controllers\TesteController@teste')->name('site.teste');

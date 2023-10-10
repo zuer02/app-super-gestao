@@ -20,12 +20,18 @@
                 <table border=1 width="100%">
                     <thead>
                         <tr>
-                            <td>Nome</td>
-                            <td>Descrição</td>
-                            <td>Peso</td>
-                            <td>Unidade ID</td>
-                            <td></td>
-                            <td></td>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Fornecedor</th>
+                            <th>Site do Fornecedor</th>
+                            <th>Peso</th>
+                            <th>Unidade ID</th>
+                            <th>Comprimento</th>
+                            <th>Altura</th>
+                            <th>Largura</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>   
                     <tbody>
@@ -33,8 +39,13 @@
                         <tr>
                             <td>{{ $produto->nome }}</td>
                             <td>{{ $produto->descricao }}</td>
+                            <td>{{ $produto->fornecedor->nome }}</td>
+                            <td>{{ $produto->fornecedor->site }}</td>
                             <td>{{ $produto->peso }}</td>
                             <td>{{ $produto->unidade_id }}</td>
+                            <td>{{ $produto->ItemDetalhe->comprimento ?? '' }}</td>
+                            <td>{{ $produto->ItemDetalhe->largura ?? '' }}</td>
+                            <td>{{ $produto->ItemDetalhe->altura ?? '' }}</td>
                             <td><a href=" {{ route('produto.show', ['produto' => $produto->id ]) }}">Visualizar</a></td>
                             <td>
                                 <form id="form_{{$produto->id}}" method="post" action="{{ route('produto.destroy', ['produto' => $produto->id]) }}">
@@ -46,11 +57,21 @@
                             </td>
                             <td><a href=" {{ route('produto.edit', ['produto' => $produto->id ]) }}">Editar</a></td>
                         </tr>
+                        <tr>
+                            <td colspan="12">
+                                <p>Pedidos<p>
+                                @foreach($produto->pedidos as $pedido)
+                                    <a href="{{ route('pedido-produto.create', ['pedido' => $pedido->id]) }}">    
+                                        Pedido: {{ $pedido->id }},
+                                    </a>
+                                @endforeach
+                            </td>
+                        </tr>
                     @endforeach
                     </tbody> 
                 </table>
                 {{ $produtos->appends($request)->links() }}
-                <!-- <br>
+                <!-- <br> ^^ isso acima nao funciona pq tem que fazer um tratamento nesse array, tá comentado no controller
                 {{ $produtos->count()}} Total de registros por página
                 <br>
                 {{ $produtos->total()}} Total de registros por consulta
@@ -60,6 +81,7 @@
                 {{ $produtos->lastItem() }} Número do último registro da página -->
                 Exibindo {{ $produtos->count()}} registros de {{ $produtos->total()}} ({{ $produtos->firstItem()}} a {{ $produtos->lastItem()}})           
             </div>
+           
         </div>
     </div>
 @endsection
